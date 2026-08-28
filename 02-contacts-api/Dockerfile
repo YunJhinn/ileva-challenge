@@ -1,6 +1,8 @@
 FROM php:8.2-cli-alpine
 
-RUN docker-php-ext-install pdo pdo_mysql pdo_sqlite
+# sqlite-dev fornece os headers que o pdo_sqlite precisa pra compilar
+RUN apk add --no-cache sqlite-dev \
+    && docker-php-ext-install pdo pdo_mysql pdo_sqlite
 
 WORKDIR /app
 
