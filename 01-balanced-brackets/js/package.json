@@ -1,0 +1,13 @@
+{
+  "name": "ileva-challenge-balanced-brackets",
+  "version": "1.0.0",
+  "description": "Balanced brackets validator - ILEVA coding challenge",
+  "main": "balancedBrackets.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "license": "MIT"
+}

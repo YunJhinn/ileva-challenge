@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Contatos</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>📇 Lista de Contatos</h1>
+    <p class="app-header__subtitle">
+      API: <code id="api-base-label"></code>
+      <span id="api-status" class="status-dot" title="Verificando API..."></span>
+    </p>
+  </header>
+
+  <main class="app-layout">
+    <!-- People column -->
+    <section class="panel people-panel">
+      <div class="panel__header">
+        <h2>Pessoas</h2>
+        <button id="new-person-btn" class="btn btn--primary">+ Nova pessoa</button>
+      </div>
+
+      <input
+        id="person-search"
+        type="search"
+        class="search-input"
+        placeholder="Buscar por nome..."
+      />
+
+      <ul id="people-list" class="people-list" aria-live="polite"></ul>
+      <p id="people-empty" class="empty-state" hidden>Nenhuma pessoa cadastrada ainda.</p>
+    </section>
+
+    <!-- Person detail / contacts column -->
+    <section class="panel detail-panel">
+      <div id="detail-placeholder" class="empty-state empty-state--large">
+        Selecione uma pessoa à esquerda, ou crie uma nova.
+      </div>
+
+      <div id="detail-content" hidden>
+        <div class="panel__header">
+          <div>
+            <h2 id="person-name"></h2>
+            <p class="muted" id="person-meta"></p>
+          </div>
+          <div class="panel__actions">
+            <button id="edit-person-btn" class="btn btn--ghost">Editar</button>
+            <button id="delete-person-btn" class="btn btn--danger">Excluir</button>
+          </div>
+        </div>
+
+        <div class="panel__header">
+          <h3>Contatos</h3>
+          <button id="new-contact-btn" class="btn btn--primary">+ Contato</button>
+        </div>
+
+        <ul id="contacts-list" class="contacts-list"></ul>
+        <p id="contacts-empty" class="empty-state" hidden>Nenhum contato cadastrado.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Person form modal -->
+  <dialog id="person-dialog" class="dialog">
+    <form id="person-form" method="dialog" class="dialog__form">
+      <h2 id="person-dialog-title">Nova pessoa</h2>
+
+      <label class="field">
+        <span>Nome</span>
+        <input id="person-name-input" name="name" type="text" required maxlength="255" placeholder="Ex: Ada Lovelace" />
+      </label>
+      <p class="field-error" id="person-name-error" hidden></p>
+
+      <div class="dialog__actions">
+        <button type="button" class="btn btn--ghost" data-close-dialog>Cancelar</button>
+        <button type="submit" class="btn btn--primary">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Contact form modal -->
+  <dialog id="contact-dialog" class="dialog">
+    <form id="contact-form" method="dialog" class="dialog__form">
+      <h2 id="contact-dialog-title">Novo contato</h2>
+
+      <label class="field">
+        <span>Tipo</span>
+        <select id="contact-type-input" name="type" required>
+          <option value="phone">Telefone</option>
+          <option value="email">E-mail</option>
+          <option value="whatsapp">WhatsApp</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Valor</span>
+        <input id="contact-value-input" name="value" type="text" required maxlength="255" placeholder="Ex: contato@exemplo.com" />
+      </label>
+      <p class="field-error" id="contact-value-error" hidden></p>
+
+      <div class="dialog__actions">
+        <button type="button" class="btn btn--ghost" data-close-dialog>Cancelar</button>
+        <button type="submit" class="btn btn--primary">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="assertive" hidden></div>
+
+  <!--
+    API base URL. Override before app.js loads (e.g. by editing this line,
+    or injecting it at deploy time) to point at wherever the backend from
+    task 2 is running.
+  -->
+  <script>
+    window.APP_CONFIG = {
+      API_BASE_URL: window.API_BASE_URL || 'http://localhost:8080/api',
+    };
+  </script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

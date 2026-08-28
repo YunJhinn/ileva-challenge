@@ -1,0 +1,20 @@
+# PHP
+vendor/
+composer.lock
+.phpunit.result.cache
+*.sqlite
+
+# Node
+node_modules/
+package-lock.json
+
+# Env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/

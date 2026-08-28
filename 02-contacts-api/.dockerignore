@@ -1,0 +1,4 @@
+vendor/
+database/database.sqlite
+.env
+.git
