@@ -83,10 +83,20 @@ async function safely(promise, fallbackMessage) {
   try {
     return await promise;
   } catch (err) {
-    const message = err instanceof ApiError ? err.message : fallbackMessage;
-    showToast(message, true);
+    showToast(errorMessage(err, fallbackMessage), true);
     throw err;
   }
+}
+
+/**
+ * A caught error is either an ApiError (the API responded, just not with a
+ * success status) or something else entirely - most commonly the browser's
+ * own "Failed to fetch" when the API isn't reachable at all (wrong URL,
+ * back-end not running, CORS, offline...). Both need a message the user can
+ * actually see, so this never falls through silently.
+ */
+function errorMessage(err, fallback = 'Não foi possível conectar à API. Verifique se o back-end está rodando.') {
+  return err instanceof ApiError ? err.message : fallback;
 }
 
 // --- Rendering ---------------------------------------------------------------
@@ -226,8 +236,8 @@ async function handlePersonSubmit(event) {
     if (err instanceof ApiError && err.fieldErrors.name) {
       els.personNameError.textContent = err.fieldErrors.name;
       els.personNameError.hidden = false;
-    } else if (err instanceof ApiError) {
-      showToast(err.message, true);
+    } else {
+      showToast(errorMessage(err), true);
     }
   }
 }
@@ -243,7 +253,7 @@ async function handleDeletePerson() {
     state.selectedPersonId = null;
     await loadPeople({ preserveSelection: false });
   } catch (err) {
-    if (err instanceof ApiError) showToast(err.message, true);
+    showToast(errorMessage(err), true);
   }
 }
 
@@ -291,8 +301,8 @@ async function handleContactSubmit(event) {
     if (err instanceof ApiError && (err.fieldErrors.value || err.fieldErrors.type)) {
       els.contactValueError.textContent = err.fieldErrors.value || err.fieldErrors.type;
       els.contactValueError.hidden = false;
-    } else if (err instanceof ApiError) {
-      showToast(err.message, true);
+    } else {
+      showToast(errorMessage(err), true);
     }
   }
 }
@@ -305,7 +315,7 @@ async function handleDeleteContact(contact) {
     showToast('Contato excluído.');
     await loadPeople();
   } catch (err) {
-    if (err instanceof ApiError) showToast(err.message, true);
+    showToast(errorMessage(err), true);
   }
 }
 
