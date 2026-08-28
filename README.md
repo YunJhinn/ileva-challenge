@@ -31,14 +31,14 @@ Cada pasta tem seu próprio README com detalhes específicos.
 # Tarefa 2 — API (porta 8080)
 cd 02-contacts-api
 cp .env.example .env
-composer dump-autoload    # não baixa nada — projeto não tem dependências externas
 php -S 0.0.0.0:8080 -t public
-# ou: composer start
 
 # Tarefa 3 — Front-end (porta 8081), em outro terminal
 cd 03-contacts-frontend
 php -S 0.0.0.0:8081
 ```
+
+Só precisa de PHP instalado — nada de Composer para simplesmente rodar (o projeto não tem dependências externas; se o Composer não tiver gerado `vendor/autoload.php`, o `public/index.php` usa um autoloader próprio como alternativa). Composer só entra em cena se você quiser rodar a suíte PHPUnit.
 
 Depois abra `http://localhost:8081` no navegador. O front-end já aponta para `http://localhost:8080/api` por padrão (ver `index.html`).
 

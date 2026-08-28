@@ -11,7 +11,25 @@ use App\Http\Router;
 use App\Repositories\ContactRepository;
 use App\Repositories\PersonRepository;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+// Prefer Composer's autoloader if it has been generated (`composer dump-autoload`),
+// but don't require it: this project has zero external runtime dependencies,
+// so a hand-rolled PSR-4-ish autoloader works exactly as well and means the
+// app runs with nothing but PHP installed - no Composer required.
+if (is_file(dirname(__DIR__) . '/vendor/autoload.php')) {
+    require dirname(__DIR__) . '/vendor/autoload.php';
+} else {
+    spl_autoload_register(function (string $class): void {
+        $prefix = 'App\\';
+        if (!str_starts_with($class, $prefix)) {
+            return;
+        }
+        $relativePath = str_replace('\\', '/', substr($class, strlen($prefix)));
+        $file = dirname(__DIR__) . '/src/' . $relativePath . '.php';
+        if (is_file($file)) {
+            require $file;
+        }
+    });
+}
 
 loadEnvFile(dirname(__DIR__) . '/.env');
 

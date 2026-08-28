@@ -20,10 +20,11 @@ tests/                    PHPUnit (Unit + Feature) + a dependency-free smoke tes
 
 ```bash
 cp .env.example .env
-composer dump-autoload      # generates vendor/autoload.php - no network needed
 php -S 0.0.0.0:8080 -t public
 curl http://localhost:8080/api/health
 ```
+
+No Composer required to just run the app - it has zero external runtime dependencies, and `public/index.php` falls back to a small hand-rolled autoloader if `vendor/autoload.php` hasn't been generated. Composer only comes into play for the PHPUnit test suite (below).
 
 ## Configuration
 
